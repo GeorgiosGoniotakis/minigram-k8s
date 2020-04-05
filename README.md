@@ -8,7 +8,37 @@ A basic Ionic client web application which consumes the RestAPI Backend.
 2. [The RestAPI Feed Backend](/udacity-c3-restapi-feed), a Node-Express feed microservice.
 3. [The RestAPI User Backend](/udacity-c3-restapi-user), a Node-Express user microservice.
 
-## Getting Setup
+### Running the application locally using Docker
+You can run the application locally by running:
+```bash
+docker-compose -f docker-compose-build.yaml build
+docker-compose up
+```
+
+### Deploying Docker images to DockerHub
+Deploying the Docker images can be easily achieved my performing `cd` into each directory, then build each image separately using `docker build -t NAME_OF_IMAGE .` and finally push each image to public DockerHub using `docker push NAME_OF_IMAGE:TAG`. If you haven't logged into Docker before pushing the images, you will need to run `docker login` and provide your Docker credentials. To pull the published Docker image of this project open a terminal and execute:
+```bash
+docker pull georgiosgoniotakis/udacity-c3-deployment
+docker pull georgiosgoniotakis/udacity-c3-frontend
+docker pull georgiosgoniotakis/udacity-c3-restapi-feed
+docker pull georgiosgoniotakis/udacity-c3-restapi-user
+```
+
+### Deploying the application to a Kubernetes Cluster
+There are many ways to use a Kubernetes cluster. My preferred way was to use minikube which allows you to deploy a miniature Kubernetes cluster on your local machine. After building the Docker image for each component locally, I triggered four deployments:
+```bash
+kubectl create deployment udacity-c3-frontend --image=georgiosgoniotakis/udacity-c3-frontend:latest
+kubectl create deployment udacity-c3-restapi-user --image=georgiosgoniotakis/udacity-c3-restapi-user:latest
+kubectl create deployment udacity-c3-restapi-feed --image=georgiosgoniotakis/udacity-c3-restapi-feed:latest
+kubectl create deployment udacity-c3-deployment --image=georgiosgoniotakis/udacity-c3-deployment:latest
+```
+OR
+```bash
+kubectl apply -f <service-file-names>
+kubectl apply -f <deployment-file-names>
+```
+
+<!-- ## Getting Setup
 
 > _tip_: this frontend is designed to work with the RestAPI backends). It is recommended you stand up the backend first, test using Postman, and then the frontend should integrate.
 
@@ -50,4 +80,4 @@ Ionic CLI can build the frontend into static HTML/CSS/JavaScript files. These fi
 ```bash
 ionic build
 ```
-***
+*** -->
